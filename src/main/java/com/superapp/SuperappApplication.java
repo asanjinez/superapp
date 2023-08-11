@@ -8,7 +8,7 @@ public class SuperappApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SuperappApplication.class, args);
-		System.out.println("hola superappers");
+		System.out.println("hola superappers!");
 	}
 
 }
