@@ -14,5 +14,5 @@ public class PersonDto {
     private String password;
     private String name;
     private String lastname;
-    private EType type;
+    private String type;
 }
