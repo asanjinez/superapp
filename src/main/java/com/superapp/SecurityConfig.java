@@ -39,6 +39,8 @@ public class SecurityConfig {
         return http.csrf().disable()
                 .authorizeHttpRequests().requestMatchers("/person").permitAll()
                 .and()
+                .authorizeHttpRequests().requestMatchers("/product").permitAll()
+                .and()
 //                .authorizeHttpRequests().requestMatchers("/person").permitAll()
 //                .and().formLogin().and()
                 .build();
