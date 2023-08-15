@@ -2,6 +2,8 @@ package com.superapp.cart;
 
 import com.superapp.item.Item;
 import com.superapp.persona.Person;
+import com.superapp.product.Product;
+import com.superapp.product.ProductDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,4 +28,10 @@ public class Cart {
 
     @OneToOne
     private Person person;
+
+    public void addItem(Product product, Float quantity) {
+        Float totalQuantity = product.getUnitPrice()*quantity;
+        Item item = new Item(product, quantity, totalQuantity);
+        itemList.add(item);
+    }
 }

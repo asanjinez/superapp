@@ -21,4 +21,9 @@ public class Item {
     private Product product;
     private Float quantity;
     private Float total;
+    public Item(Product product, Float quantity, Float total){
+        this.product = product;
+        this.quantity = quantity;
+        this.total = total;
+    }
 }
