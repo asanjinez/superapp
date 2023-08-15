@@ -26,4 +26,13 @@ public class Person {
     private String lastname;
     @Column(name = "type")
     private EType type;
+
+    public Person(String username, String email, String password, String name, String lastname, EType type) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.lastname = lastname;
+        this.type = type;
+    }
 }

@@ -28,9 +28,13 @@ public class PersonServiceImpl implements IPersonService {
 
     @Override
     public Person createPerson(PersonDto personDto) {
+        if (personDto.getId() == null)
+            return personJpaDao.save(personMapper.personDtoToPerson(personDto));
+
         Person personToCreate = personJpaDao.findById(personDto.getId()).get();
         if(personToCreate != null)
             throw new ExistingNameException("Alredy exists a person with id " + personDto.getId());
+
         return personJpaDao.save(personMapper.personDtoToPerson(personDto));
     }
 
@@ -38,7 +42,6 @@ public class PersonServiceImpl implements IPersonService {
     public Person findById(Integer id) {
         return this.personExists(id);
     }
-
     @Override
     public Person updatePerson(PersonDto personDto) {
         Person personToEdit = this.personExists(personDto.getId());
