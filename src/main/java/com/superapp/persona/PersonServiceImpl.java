@@ -28,11 +28,7 @@ public class PersonServiceImpl implements IPersonService {
 
     @Override
     public Person createPerson(PersonDto personDto) {
-        if (personDto.getId() == null)
-            return personJpaDao.save(personMapper.personDtoToPerson(personDto));
-
-        Person personToCreate = personJpaDao.findById(personDto.getId()).get();
-        if(personToCreate != null)
+        if(personDto.getId() != null && personJpaDao.findById(personDto.getId()).isPresent())
             throw new ExistingNameException("Alredy exists a person with id " + personDto.getId());
 
         return personJpaDao.save(personMapper.personDtoToPerson(personDto));
