@@ -1,9 +1,7 @@
 package com.superapp.product;
 
 import com.superapp.exception.ExistingNameException;
-import com.superapp.exception.NoPersonFoundException;
 import com.superapp.exception.NoProductFoundException;
-import com.superapp.persona.PersonDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
