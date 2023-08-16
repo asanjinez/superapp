@@ -36,6 +36,22 @@ public class ProductController {
         }
     }
 
+    @PostMapping("/some")
+    public ResponseEntity createSomeProducts(@RequestBody List<ProductDto> productDtoList) {
+        try {
+            List<ProductDto> productsCreated = productMapper.productListToProductDtoList(this.productService.createProdcuts(productDtoList));
+            return new ResponseEntity<List<ProductDto>>(productsCreated, HttpStatus.CREATED);
+
+        } catch (ExistingNameException e) {
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+
+        } catch (Exception e) {
+            log.debug(e.getMessage());
+            return new ResponseEntity<>("Unknown error :c", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping
     public ResponseEntity findAll() {
         try {

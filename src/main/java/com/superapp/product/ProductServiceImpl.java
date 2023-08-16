@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +34,15 @@ public class ProductServiceImpl implements IProductService {
             throw new ExistingNameException("Alredy exists a product with id " + productDto.getId());
 
         return productJpaDao.save(productMapper.productDtoToProduct(productDto));
+    }
+
+    @Override
+    public List<Product> createProdcuts(List<ProductDto> productDtoList) {
+        List<Product> productList = new ArrayList<Product>();
+        for (ProductDto product : productDtoList){
+            productList.add(this.createProduct(product));
+        }
+        return productList;
     }
 
     @Override
