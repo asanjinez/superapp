@@ -1,6 +1,5 @@
-package com.superapp.persona;
+package com.superapp.person;
 
-import com.superapp.cart.Cart;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.superapp.persona;
+package com.superapp.person;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

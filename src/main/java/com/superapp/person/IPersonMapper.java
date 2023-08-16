@@ -1,18 +1,20 @@
-package com.superapp.persona;
+package com.superapp.person;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface IPersonMapper {
+    IPersonMapper INSTANCE = Mappers.getMapper(IPersonMapper.class);
     @Mapping(target = "type", expression = "java(this.typeToString(person.getType()))")
     PersonDto personToPersonDto(Person person);
     @Mapping(target = "type", expression = "java(this.stringToType(personDto.getType()))")
     Person personDtoToPerson(PersonDto personDto);
     List<PersonDto> personListToPersonDtoList(List<Person> personList);
-    List<Person> personDtoListToPerson(List<PersonDto> personDtoList);
+    List<Person> personDtoListToPersonList(List<PersonDto> personDtoList);
 
 
     default String typeToString(EType type) {
