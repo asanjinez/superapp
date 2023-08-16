@@ -1,5 +1,6 @@
 package com.superapp.persona;
 
+import com.superapp.cart.ICartService;
 import com.superapp.exception.ExistingNameException;
 import com.superapp.exception.NoPersonFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -18,19 +19,23 @@ public class PersonController {
     private IPersonService personService;
 
     @Autowired
+    private ICartService cartService;
+
+    @Autowired
     private IPersonMapper personMapper;
 
     @PostMapping
     public ResponseEntity createPerson(@RequestBody PersonDto personDto) {
         try {
             PersonDto personCreated = personMapper.personToPersonDto(personService.createPerson(personDto));
-            return new ResponseEntity<PersonDto>(personCreated,HttpStatus.CREATED);
+            cartService.createCart(personCreated);
+            return new ResponseEntity<PersonDto>(personCreated, HttpStatus.CREATED);
 
         } catch (ExistingNameException e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>("Unknown error :c", HttpStatus.INTERNAL_SERVER_ERROR);
         }

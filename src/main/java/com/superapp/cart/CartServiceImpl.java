@@ -2,7 +2,9 @@ package com.superapp.cart;
 
 import com.superapp.exception.NoCartFoundException;
 import com.superapp.exception.NoPersonFoundException;
+import com.superapp.persona.IPersonMapper;
 import com.superapp.persona.Person;
+import com.superapp.persona.PersonDto;
 import com.superapp.product.IProductMapper;
 import com.superapp.product.ProductDto;
 import jakarta.transaction.Transactional;
@@ -20,25 +22,34 @@ public class CartServiceImpl implements ICartService{
     private ICartJpaDao cartJpaDao;
     @Autowired
     private IProductMapper productMapper;
-    /*@Autowired
-    private ICartMapper cartMapper;
-    */
+    @Autowired
+    private IPersonMapper personMapper;
+
+    @Override
+    public Cart createCart(PersonDto person){
+        Cart cart = new Cart(personMapper.personDtoToPerson(person));
+        return cartJpaDao.save(cart);
+    }
+
     @Override
     public Cart addItem(Integer idCart, ProductDto productDto, Float quantity) {
         Cart cart = this.cartExists(idCart);
         cart.addItem(productMapper.productDtoToProduct(productDto), quantity);
-        cartJpaDao.save(cart);
-        return cart;
+        return cartJpaDao.save(cart);
     }
 
     @Override
     public Cart deleteItem(Integer idCart, Integer idItem) {
-        return null;
+        Cart cart = this.cartExists(idCart);
+        cart.removeItem(idItem);
+        return cartJpaDao.save(cart);
     }
 
     @Override
     public Cart deleteAllItems(Integer idCart) {
-        return null;
+        Cart cart = this.cartExists(idCart);
+        cart.removeAllItems();
+        return cartJpaDao.save(cart);
     }
 
     private Cart cartExists(Integer id){

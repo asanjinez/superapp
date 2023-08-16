@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name="cart")
@@ -29,9 +30,21 @@ public class Cart {
     @OneToOne
     private Person person;
 
+    public Cart(Person person) {
+        this.person = person;
+    }
+
     public void addItem(Product product, Float quantity) {
         Float totalQuantity = product.getUnitPrice()*quantity;
         Item item = new Item(product, quantity, totalQuantity);
         itemList.add(item);
+    }
+
+    public void removeItem(Integer idItem) {
+        itemList = itemList.stream().filter(i -> i.getId() != idItem).collect(Collectors.toList());
+    }
+
+    public void removeAllItems() {
+        itemList = new ArrayList<>();
     }
 }
