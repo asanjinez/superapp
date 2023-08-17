@@ -43,4 +43,28 @@ public class CartController {
             return new ResponseEntity<>("Unknown error :c", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/{idPerson}")
+    public ResponseEntity removeItem(@RequestBody ItemDto itemDto, @PathVariable Integer idPerson){
+        Cart cart = cartService.getCart(idPerson);
+        try {
+            cart = cartService.deleteItem(cart.getId(), itemDto.getId());
+            return new ResponseEntity<CartDto>(cartMapper.cartToCartDto(cart), HttpStatus.OK);
+        } catch(Exception e){
+            log.debug(e.getMessage());
+            return new ResponseEntity<>("Unknown error :c", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{idPerson}/all")
+    public ResponseEntity removeAllItems(@PathVariable Integer idPerson){
+        Cart cart = cartService.getCart(idPerson);
+        try {
+            cart = cartService.deleteAllItems(cart.getId());
+            return new ResponseEntity<CartDto>(cartMapper.cartToCartDto(cart), HttpStatus.OK);
+        } catch(Exception e){
+            log.debug(e.getMessage());
+            return new ResponseEntity<>("Unknown error :c", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
