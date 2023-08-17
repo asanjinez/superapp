@@ -23,7 +23,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Item> itemList = new ArrayList<>();
 
     @OneToOne

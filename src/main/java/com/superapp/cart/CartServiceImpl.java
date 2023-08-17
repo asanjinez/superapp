@@ -52,10 +52,10 @@ public class CartServiceImpl implements ICartService{
 
     @Override
     public Cart getCart(Integer idPerson) {
-        Optional<Cart> cart = cartJpaDao.findByPerson(idPerson);
-        if(!cart.isPresent())
+        Cart cart = cartJpaDao.findByPerson(idPerson);
+        if(cart==null)
             throw new NoCartFoundException("This cart doesn't exist");
-        return cart.get();
+        return cart;
     }
 
     private Cart cartExists(Integer id){

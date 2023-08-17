@@ -43,6 +43,8 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests().requestMatchers("/product/**").permitAll()
                 .and()
+                .authorizeHttpRequests().requestMatchers("/cart/**").permitAll()
+                .and()
 //                .authorizeHttpRequests().requestMatchers("/person").permitAll()
 //                .and().formLogin().and()
                 .build();

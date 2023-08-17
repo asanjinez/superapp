@@ -39,7 +39,7 @@ public class ProductController {
     @PostMapping("/some")
     public ResponseEntity createSomeProducts(@RequestBody List<ProductDto> productDtoList) {
         try {
-            List<ProductDto> productsCreated = productMapper.productListToProductDtoList(this.productService.createProdcuts(productDtoList));
+            List<ProductDto> productsCreated = productMapper.productListToProductDtoList(this.productService.createProducts(productDtoList));
             return new ResponseEntity<List<ProductDto>>(productsCreated, HttpStatus.CREATED);
 
         } catch (ExistingNameException e) {

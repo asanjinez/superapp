@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ItemDto {
     private Integer id;
-    private ProductDto productDto;
+    private Integer idProduct;
     private Float quantity;
     private Float total;
 }

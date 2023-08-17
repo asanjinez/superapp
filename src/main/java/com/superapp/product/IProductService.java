@@ -1,12 +1,15 @@
 package com.superapp.product;
 
+import com.superapp.person.IPersonMapper;
+import org.mapstruct.factory.Mappers;
+
 import java.util.List;
-import java.util.Optional;
 
 public interface IProductService {
+    IProductService INSTANCE = Mappers.getMapper(IProductService.class);
     public List<Product> findAll();
     public Product createProduct(ProductDto productDto);
-    public List<Product> createProdcuts(List<ProductDto> productDtoListList);
+    public List<Product> createProducts(List<ProductDto> productDtoListList);
     public Product findById(Integer id);
     public Product updateProduct(ProductDto productDto);
     Product findByName(String name);

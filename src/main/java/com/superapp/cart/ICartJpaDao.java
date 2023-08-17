@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface ICartJpaDao extends JpaRepository<Cart, Integer> {
-    @Query("SELECT c FROM cart WHERE person_id = ?idPerson")
-    Optional<Cart> findByPerson(Integer idPerson);
+    @Query("SELECT C FROM Cart C WHERE C.person.id = :idPerson")
+    Cart findByPerson(Integer idPerson);
 }

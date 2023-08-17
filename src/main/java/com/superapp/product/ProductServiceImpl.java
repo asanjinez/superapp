@@ -37,7 +37,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<Product> createProdcuts(List<ProductDto> productDtoList) {
+    public List<Product> createProducts(List<ProductDto> productDtoList) {
         List<Product> productList = new ArrayList<Product>();
         for (ProductDto product : productDtoList){
             productList.add(this.createProduct(product));
