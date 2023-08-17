@@ -1,7 +1,6 @@
 package com.superapp.cart;
 
-import com.superapp.persona.Person;
-import com.superapp.persona.PersonDto;
+import com.superapp.person.PersonDto;
 import com.superapp.product.ProductDto;
 
 public interface ICartService {

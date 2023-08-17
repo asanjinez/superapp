@@ -1,4 +1,4 @@
-package com.superapp.persona;
+package com.superapp.person;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

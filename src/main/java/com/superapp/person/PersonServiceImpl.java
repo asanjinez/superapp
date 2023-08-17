@@ -1,4 +1,4 @@
-package com.superapp.persona;
+package com.superapp.person;
 
 import com.superapp.exception.ExistingNameException;
 import com.superapp.exception.NoPersonFoundException;

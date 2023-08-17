@@ -1,4 +1,4 @@
-package com.superapp.persona;
+package com.superapp.person;
 
 public enum EType {
     USER,

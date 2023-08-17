@@ -1,4 +1,4 @@
-package com.superapp.persona;
+package com.superapp.person;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

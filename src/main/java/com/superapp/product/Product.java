@@ -1,6 +1,5 @@
 package com.superapp.product;
 
-import com.superapp.persona.EType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
