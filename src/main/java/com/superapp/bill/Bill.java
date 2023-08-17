@@ -11,7 +11,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "factura")
+@Table(name = "bill")
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 public class Bill {
@@ -19,13 +19,13 @@ public class Bill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "person")
     @ManyToOne
+    @JoinColumn(name = "person_fk")
     private Person person;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany
     private List<Item> items;
 
-    @Column(name = "person")
+    @Column(name = "total")
     private Float total;
 }
