@@ -1,37 +1,31 @@
-package com.superapp.person;
+package com.superapp.bill;
 
-import com.superapp.cart.ICartService;
 import com.superapp.exception.ExistingIdException;
+import com.superapp.exception.InvalidBillException;
 import com.superapp.exception.NoPersonFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/person")
-public class PersonController {
+@RequestMapping("/bill")
+public class BillController {
     @Autowired
-    private IPersonService personService;
-
+    private IBillService billService;
     @Autowired
-    private ICartService cartService;
-
-    @Autowired
-    private IPersonMapper personMapper;
+    private IBillMapper billMapper;
 
     @PostMapping
-    public ResponseEntity createPerson(@RequestBody PersonDto personDto) {
+    public ResponseEntity createBill(@RequestBody BillDto billDto) {
         try {
-            PersonDto personCreated = personMapper.personToPersonDto(personService.createPerson(personDto));
-            cartService.createCart(personCreated);
-            return new ResponseEntity<PersonDto>(personCreated, HttpStatus.CREATED);
+            BillDto billCreated = billMapper.billToBillDto(billService.createBill(billDto));
+            return new ResponseEntity<BillDto>(billCreated, HttpStatus.CREATED);
 
-        } catch (ExistingIdException e) {
+        } catch (ExistingIdException | NoPersonFoundException | InvalidBillException e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 
@@ -42,62 +36,63 @@ public class PersonController {
     }
 
     @GetMapping
-    public ResponseEntity findAll(){
+    public ResponseEntity findAllBills() {
         try {
-            List<PersonDto> persons = personMapper.personListToPersonDtoList(personService.findAll());
-            return new ResponseEntity<List<PersonDto>>(persons,HttpStatus.OK);
+            List<BillDto> bills = billMapper.billListToBillDtoList(billService.findAll());
+            return new ResponseEntity<List<BillDto>>(bills, HttpStatus.OK);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>("Unknown error :c", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity findById(@PathVariable Integer id){
+    public ResponseEntity findBillById(@PathVariable Integer id) {
         try {
-            PersonDto personFound = personMapper.personToPersonDto(personService.findById(id));
-            return new ResponseEntity<PersonDto>(personFound,HttpStatus.FOUND);
+            BillDto billFound = billMapper.billToBillDto(billService.findById(id));
+            return new ResponseEntity<BillDto>(billFound, HttpStatus.FOUND);
 
-        } catch (NoPersonFoundException e) {
+        } catch (ExistingIdException | NoPersonFoundException | InvalidBillException e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>("Unknown error :c", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PutMapping()
-    public ResponseEntity update(@RequestBody PersonDto personDto){
+    @PutMapping
+    public ResponseEntity updateBill(@RequestBody BillDto billDto) {
         try {
-            PersonDto personUpdated = personMapper.personToPersonDto(personService.updatePerson(personDto));
-            return new ResponseEntity<PersonDto>(personUpdated,HttpStatus.OK);
+            BillDto billUpdated = billMapper.billToBillDto(billService.updateBill(billDto));
+            return new ResponseEntity<BillDto>(billUpdated, HttpStatus.OK);
 
-        } catch (NoPersonFoundException e) {
+        } catch (ExistingIdException | NoPersonFoundException | InvalidBillException e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>("Unknown error :c", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @DeleteMapping()
-    public ResponseEntity delete(@RequestBody Integer id){
+    @DeleteMapping
+    public ResponseEntity deleteBill(@RequestBody Integer id) {
         try {
-            personService.deletePerson(id);
+            billService.deleteBill(id);
             return new ResponseEntity<>(HttpStatus.OK);
 
-        } catch (NoPersonFoundException e) {
+        } catch (ExistingIdException | NoPersonFoundException | InvalidBillException e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>("Unknown error :c", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

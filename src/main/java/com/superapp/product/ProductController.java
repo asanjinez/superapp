@@ -1,6 +1,6 @@
 package com.superapp.product;
 
-import com.superapp.exception.ExistingNameException;
+import com.superapp.exception.ExistingIdException;
 import com.superapp.exception.NoProductFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class ProductController {
             ProductDto productCreated = productMapper.productToProductDto(productService.createProduct(productDto));
             return new ResponseEntity<ProductDto>(productCreated, HttpStatus.CREATED);
 
-        } catch (ExistingNameException e) {
+        } catch (ExistingIdException e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 
@@ -42,7 +42,7 @@ public class ProductController {
             List<ProductDto> productsCreated = productMapper.productListToProductDtoList(this.productService.createProducts(productDtoList));
             return new ResponseEntity<List<ProductDto>>(productsCreated, HttpStatus.CREATED);
 
-        } catch (ExistingNameException e) {
+        } catch (ExistingIdException e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 

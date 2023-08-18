@@ -1,10 +1,13 @@
 package com.superapp.person;
 
+import com.superapp.bill.Bill;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "person")
@@ -26,4 +29,6 @@ public class Person {
     private String lastname;
     @Column(name = "type")
     private EType type;
+    @OneToMany(mappedBy = "person")
+    private List<Bill> billList;
 }

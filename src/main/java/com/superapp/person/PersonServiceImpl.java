@@ -1,6 +1,6 @@
 package com.superapp.person;
 
-import com.superapp.exception.ExistingNameException;
+import com.superapp.exception.ExistingIdException;
 import com.superapp.exception.NoPersonFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,8 @@ public class PersonServiceImpl implements IPersonService {
     @Override
     public Person createPerson(PersonDto personDto) {
         if(personDto.getId() != null && personJpaDao.findById(personDto.getId()).isPresent())
-            throw new ExistingNameException("Alredy exists a person with id " + personDto.getId());
+            throw new ExistingIdException("Alredy exists a person with id " + personDto.getId());
+
 
         return personJpaDao.save(personMapper.personDtoToPerson(personDto));
     }

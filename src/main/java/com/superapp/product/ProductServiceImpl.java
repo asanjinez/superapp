@@ -1,7 +1,6 @@
 package com.superapp.product;
 
-import com.superapp.exception.ExistingNameException;
-import com.superapp.exception.NoPersonFoundException;
+import com.superapp.exception.ExistingIdException;
 import com.superapp.exception.NoProductFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,7 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Product createProduct(ProductDto productDto) {
         if(productDto.getId() != null && productJpaDao.findById(productDto.getId()).isPresent())
-            throw new ExistingNameException("Alredy exists a product with id " + productDto.getId());
+            throw new ExistingIdException("Alredy exists a product with id " + productDto.getId());
 
         return productJpaDao.save(productMapper.productDtoToProduct(productDto));
     }

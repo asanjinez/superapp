@@ -37,13 +37,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
-                .authorizeHttpRequests().requestMatchers("/person").permitAll()
-                .and()
-                .authorizeHttpRequests().requestMatchers("/product").permitAll()
-                .and()
-                .authorizeHttpRequests().requestMatchers("/product/**").permitAll()
-                .and()
-                .authorizeHttpRequests().requestMatchers("/cart/**").permitAll()
+                .authorizeHttpRequests().requestMatchers("/**").permitAll()
                 .and()
 //                .authorizeHttpRequests().requestMatchers("/person").permitAll()
 //                .and().formLogin().and()
