@@ -1,0 +1,46 @@
+version: '3'
+services:
+  ### Mysql db for bill
+  db-bill:
+    container_name: db-bill
+    image: mysql:8.0.33
+    volumes:
+      - ./sql/sql-bill-data/db:/var/lib/mysql # Mantenemos un vinculo entre ./sql-data/db (Local) y ./sql-data/db(Container) para resguardar los datos del container
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: superapp_bill
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3307:3306
+
+  ### Mysql db for product
+  db-product:
+    container_name: db-product
+    image: mysql:8.0.33
+    volumes:
+      - ./sql/sql-product-data/db:/var/lib/mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: superapp_product
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3308:3306
+
+  ### Mysql db for validator
+  db-validator:
+    container_name: db-validator
+    image: mysql:8.0.33
+    volumes:
+      - ./sql/sql-validator-data/db:/var/lib/mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: superapp_validator
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3309:3306
+
+
+
+
+
+

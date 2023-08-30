@@ -1,7 +1,6 @@
 package com.superapp.bill_service.bill;
 
-import com.superapp.item.Item;
-import com.superapp.person.PersonDto;
+import com.superapp.bill_service.item.ItemDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,6 @@ import java.util.List;
 @Getter @Setter
 public class BillDto {
     private Integer id;
-    private PersonDto personDto;
-    private List<Item> items;
+    private List<ItemDto> dtoItems;
     private Float total;
 }

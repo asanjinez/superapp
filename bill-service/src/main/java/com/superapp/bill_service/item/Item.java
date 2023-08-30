@@ -1,6 +1,5 @@
 package com.superapp.bill_service.item;
 
-import com.superapp.bill_service.bill.Bill;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,8 +17,4 @@ public class Item {
     private String code_product;
     private Float price;
     private Float quantity;
-    @ManyToOne
-    @JoinColumn(name = "bill_id")
-    private Bill bill;
-
 }

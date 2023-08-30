@@ -1,13 +1,8 @@
 package com.superapp.bill_service.bill;
 
-import com.superapp.person.Person;
-import com.superapp.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
+@Repository
 public interface IBillJpaDao extends JpaRepository<Bill, Integer>  {
-    Optional<Bill> findByPerson(Person person);
-    Optional<Bill> findByPersonId(Integer id);
-
 }

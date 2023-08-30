@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -17,9 +18,8 @@ public class Bill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
+    private LocalDateTime date;
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Item> items;
-
     private Float total;
 }

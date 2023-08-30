@@ -35,3 +35,5 @@ build/
 ### Config ###
 *.properties
 
+### db-docker-relations ###
+sql/
