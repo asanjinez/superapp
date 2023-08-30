@@ -1,4 +1,4 @@
-package com.superapp.bill;
+package com.superapp.bill_service.bill;
 
 import com.superapp.person.Person;
 import com.superapp.product.Product;

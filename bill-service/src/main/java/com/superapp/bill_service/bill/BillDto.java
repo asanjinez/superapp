@@ -1,4 +1,4 @@
-package com.superapp.bill;
+package com.superapp.bill_service.bill;
 
 import com.superapp.item.Item;
 import com.superapp.person.PersonDto;

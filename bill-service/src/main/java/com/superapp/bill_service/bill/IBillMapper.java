@@ -1,4 +1,4 @@
-package com.superapp.bill;
+package com.superapp.bill_service.bill;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

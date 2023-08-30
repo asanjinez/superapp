@@ -1,7 +1,6 @@
-package com.superapp.bill;
+package com.superapp.bill_service.bill;
 
-import com.superapp.item.Item;
-import com.superapp.person.Person;
+import com.superapp.bill_service.item.Item;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,13 +18,8 @@ public class Bill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "person_fk")
-    private Person person;
-
-    @OneToMany
+    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
     private List<Item> items;
 
-    @Column(name = "total")
     private Float total;
 }

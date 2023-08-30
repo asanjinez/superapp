@@ -1,4 +1,4 @@
-package com.superapp.bill;
+package com.superapp.bill_service.bill;
 
 import com.superapp.exception.ExistingIdException;
 import com.superapp.exception.InvalidBillException;
