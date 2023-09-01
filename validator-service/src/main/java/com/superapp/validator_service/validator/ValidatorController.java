@@ -15,6 +15,15 @@ public class ValidatorController {
     private IValidatorService validatorService;
 
     /**
+     * Get a list of all products.
+     * @return ResponseEntity containing the list of products or an error message.
+     */
+    @GetMapping("/list")
+    public List<Validator> findAll() {
+        return validatorService.findAll();
+    }
+
+    /**
      * Return status of a specific product
      * @return Return true or false if the product is in stock
      */

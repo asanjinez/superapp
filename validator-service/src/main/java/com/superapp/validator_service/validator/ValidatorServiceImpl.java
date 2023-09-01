@@ -19,6 +19,11 @@ public class ValidatorServiceImpl implements IValidatorService{
     private IValidatorJpaDao validatorJpaDao;
 
     @Override
+    public List<Validator> findAll() {
+        return validatorJpaDao.findAll();
+    }
+
+    @Override
     public boolean isInStock(String code_product) {
         var validator = validatorJpaDao.findByCodeProduct(code_product);
         return validator.filter((validator1 -> validator1.getStock() > 0)).isPresent();

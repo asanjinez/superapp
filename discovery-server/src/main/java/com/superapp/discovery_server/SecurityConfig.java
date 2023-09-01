@@ -1,4 +1,4 @@
-package com.superapp.product_service;
+package com.superapp.discovery_server;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-
 //    @Bean
 //    UserDetailsService userDetailsService(PasswordEncoder encoder) {
 ////        UserDetails adminUser = User.withUsername("admin")
