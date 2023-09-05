@@ -1,7 +1,7 @@
 package com.superapp.cart;
 
 import com.superapp.item.ItemDto;
-import com.superapp.person.PersonDto;
+import com.superapp.auth_service.person.PersonDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

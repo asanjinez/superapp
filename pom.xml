@@ -28,6 +28,7 @@
 	<modules>
 		<module>api-gateway</module>
 		<module>discovery-server</module>
+		<module>auth-service</module>
 		<module>product-service</module>
 		<module>bill-service</module>
 		<module>validator-service</module>

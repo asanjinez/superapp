@@ -121,10 +121,6 @@ public class BillServiceImpl implements IBillService {
     }
 
     private Bill billExists(Integer id){
-        Optional<Bill> bill = billJpaDao.findById(id);
-        if (!bill.isPresent())
-            throw new NoBillFoundException("The bill with id: " + id + " doesn't exist");
-
-        return bill.get();
+        return billJpaDao.findById(id).orElseThrow(() -> new NoBillFoundException("Bill with id: " + id + " doesn't exist"));
     }
 }

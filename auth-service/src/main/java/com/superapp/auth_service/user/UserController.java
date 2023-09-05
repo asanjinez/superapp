@@ -1,8 +1,9 @@
-package com.superapp.person;
+package com.superapp.auth_service.user;
 
-import com.superapp.cart.ICartService;
-import com.superapp.exception.ExistingIdException;
-import com.superapp.exception.NoPersonFoundException;
+import com.superapp.auth_service.exception.ExistingEmailException;
+import com.superapp.auth_service.exception.ExistingIdException;
+import com.superapp.auth_service.exception.ExistingUsernameException;
+import com.superapp.auth_service.exception.NoUserFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,25 +14,21 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/person")
-public class PersonController {
+@RequestMapping("/user")
+public class UserController {
     @Autowired
-    private IPersonService personService;
+    private IUserService userService;
 
     @Autowired
-    private ICartService cartService;
-
-    @Autowired
-    private IPersonMapper personMapper;
+    private IUserMapper userMapper;
 
     @PostMapping
-    public ResponseEntity createPerson(@RequestBody PersonDto personDto) {
+    public ResponseEntity createUser(@RequestBody UserDto userDto) {
         try {
-            PersonDto personCreated = personMapper.personToPersonDto(personService.createPerson(personDto));
-            cartService.createCart(personCreated);
-            return new ResponseEntity<PersonDto>(personCreated, HttpStatus.CREATED);
+            UserDto userCreated = userMapper.userToUserDto(userService.createUser(userDto));
+            return new ResponseEntity<UserDto>(userCreated, HttpStatus.CREATED);
 
-        } catch (ExistingIdException e) {
+        } catch (ExistingIdException | ExistingUsernameException | ExistingEmailException e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 
@@ -44,8 +41,8 @@ public class PersonController {
     @GetMapping
     public ResponseEntity findAll(){
         try {
-            List<PersonDto> persons = personMapper.personListToPersonDtoList(personService.findAll());
-            return new ResponseEntity<List<PersonDto>>(persons,HttpStatus.OK);
+            List<UserDto> users = userMapper.userListToUserDtoList(userService.findAll());
+            return new ResponseEntity<List<UserDto>>(users,HttpStatus.OK);
 
         } catch (Exception e){
             log.debug(e.getMessage());
@@ -56,10 +53,10 @@ public class PersonController {
     @GetMapping("/{id}")
     public ResponseEntity findById(@PathVariable Integer id){
         try {
-            PersonDto personFound = personMapper.personToPersonDto(personService.findById(id));
-            return new ResponseEntity<PersonDto>(personFound,HttpStatus.FOUND);
+            UserDto userFound = userMapper.userToUserDto(userService.findById(id));
+            return new ResponseEntity<UserDto>(userFound,HttpStatus.FOUND);
 
-        } catch (NoPersonFoundException e) {
+        } catch (NoUserFoundException e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 
@@ -70,12 +67,12 @@ public class PersonController {
     }
 
     @PutMapping()
-    public ResponseEntity update(@RequestBody PersonDto personDto){
+    public ResponseEntity update(@RequestBody UserDto userDto){
         try {
-            PersonDto personUpdated = personMapper.personToPersonDto(personService.updatePerson(personDto));
-            return new ResponseEntity<PersonDto>(personUpdated,HttpStatus.OK);
+            UserDto userUpdated = userMapper.userToUserDto(userService.updateUser(userDto));
+            return new ResponseEntity<UserDto>(userUpdated,HttpStatus.OK);
 
-        } catch (NoPersonFoundException e) {
+        } catch (NoUserFoundException e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 
@@ -88,10 +85,10 @@ public class PersonController {
     @DeleteMapping()
     public ResponseEntity delete(@RequestBody Integer id){
         try {
-            personService.deletePerson(id);
+            userService.deleteUser(id);
             return new ResponseEntity<>(HttpStatus.OK);
 
-        } catch (NoPersonFoundException e) {
+        } catch (NoUserFoundException e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 

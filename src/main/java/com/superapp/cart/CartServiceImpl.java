@@ -1,8 +1,8 @@
 package com.superapp.cart;
 
 import com.superapp.exception.NoCartFoundException;
-import com.superapp.person.IPersonMapper;
-import com.superapp.person.PersonDto;
+import com.superapp.auth_service.person.IPersonMapper;
+import com.superapp.auth_service.person.PersonDto;
 import com.superapp.product.IProductMapper;
 import com.superapp.product.ProductDto;
 import jakarta.transaction.Transactional;

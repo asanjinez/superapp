@@ -1,7 +1,7 @@
 package com.superapp.cart;
 
 import com.superapp.item.Item;
-import com.superapp.person.Person;
+import com.superapp.auth_service.person.Person;
 import com.superapp.product.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

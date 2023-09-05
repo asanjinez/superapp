@@ -39,6 +39,19 @@ services:
     ports:
       - 3309:3306
 
+### Mysql db for validator
+  db-user:
+    container_name: db-user
+    image: mysql:8.0.33
+    volumes:
+      - ./sql/sql-user-data/db:/var/lib/mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: superapp_user
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3310:3306
+
 
 
 
