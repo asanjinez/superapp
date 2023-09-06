@@ -17,10 +17,8 @@ import java.util.List;
 public class UserServiceImpl implements IUserService {
     @Autowired
     IUserJpaDao userJpaDao;
-
     @Autowired
     IUserMapper userMapper;
-
 
     @Override
     public List<User> findAll() {
@@ -40,28 +38,29 @@ public class UserServiceImpl implements IUserService {
                 throw new ExistingEmailException("Already exists a person with email " + userDto.getEmail());
             });
 
-            return userJpaDao.save(userMapper.userDtoToUser(userDto));
+            User userCreated = userJpaDao.save(userMapper.userDtoToUser(userDto));
+
+            log.info("User created: {}", userCreated);
+            return userCreated;
 
         } catch (ExistingIdException|ExistingUsernameException|ExistingEmailException e) {
-            log.info(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw e;
         } catch (Exception e) {
-            log.info(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new RuntimeException("Error creating user", e);
         }
-
-
     }
 
     @Override
     public User findById(Integer id) {
         try {
-            return this.personExistsById(id);
+            return this.userExistsById(id);
         } catch (NoUserFoundException e) {
-            log.info(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw e;
         } catch (Exception e) {
-            log.info(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw e;
         }
     }
@@ -69,12 +68,16 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User findByEmail(String email) {
         try {
-            return this.personExistsByEmail(email);
+            User user = this.userExistsByEmail(email);
+            log.info("User found: {}", user);
+
+            return user;
+
         } catch (NoUserFoundException e) {
-            log.info(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw e;
         } catch (Exception e) {
-            log.info(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw e;
         }
     }
@@ -82,12 +85,16 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User findByUsername(String username){
         try {
-            return this.personExistsByUsername(username);
+            User user = this.userExistsByUsername(username);
+            log.info("User found: {}", user);
+
+            return user;
+
         } catch (NoUserFoundException e) {
-            log.info(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw e;
         } catch (Exception e) {
-            log.info(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw e;
         }
     }
@@ -95,7 +102,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User updateUser(UserDto userDto) {
         try {
-            User userToEdit = this.personExistsById(userDto.getId());
+            User userToEdit = this.userExistsById(userDto.getId());
             userToEdit.setUsername(userDto.getUsername());
             userToEdit.setEmail(userDto.getEmail());
             userToEdit.setPassword(userDto.getPassword());
@@ -103,12 +110,15 @@ public class UserServiceImpl implements IUserService {
             userToEdit.setLastname(userDto.getLastname());
             userToEdit.setRole(userMapper.stringToRole(userDto.getRole()));
 
-            return userJpaDao.save(userToEdit);
+            User userEdited = userJpaDao.save(userToEdit);
+            log.info("User updated: {}", userEdited);
+
+            return userEdited;
         } catch (NoUserFoundException e) {
-            log.info(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw e;
         } catch (Exception e) {
-            log.info(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw e;
         }
     }
@@ -116,25 +126,27 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void deleteUser(Integer id) {
         try {
-            User userToDelete = this.personExistsById(id);
+            User userToDelete = this.userExistsById(id);
             userJpaDao.delete(userToDelete);
+            log.info("User deleted: {}", userToDelete);
+
         } catch (NoUserFoundException e) {
-            log.info(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw e;
         } catch (Exception e) {
-            log.info(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw e;
         }
 
     }
 
-    private User personExistsById(Integer id){
-        return userJpaDao.findById(id).orElseThrow(() -> new NoUserFoundException("Person with id: " + id + " doesn't exist"));
+    private User userExistsById(Integer id){
+        return userJpaDao.findById(id).orElseThrow(() -> new NoUserFoundException("User with id: " + id + " doesn't exist"));
     }
-    private User personExistsByEmail(String email){
-        return userJpaDao.findByEmail(email).orElseThrow(() -> new NoUserFoundException("Person with email: " + email + " doesn't exist"));
+    private User userExistsByEmail(String email){
+        return userJpaDao.findByEmail(email).orElseThrow(() -> new NoUserFoundException("User with email: " + email + " doesn't exist"));
     }
-    private User personExistsByUsername(String username){
-        return userJpaDao.findByUsername(username).orElseThrow(() -> new NoUserFoundException("Person with username: " + username + " doesn't exist"));
+    private User userExistsByUsername(String username){
+        return userJpaDao.findByUsername(username).orElseThrow(() -> new NoUserFoundException("User with username: " + username + " doesn't exist"));
     }
 }

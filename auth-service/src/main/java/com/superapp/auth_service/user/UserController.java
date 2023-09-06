@@ -1,9 +1,5 @@
 package com.superapp.auth_service.user;
 
-import com.superapp.auth_service.exception.ExistingEmailException;
-import com.superapp.auth_service.exception.ExistingIdException;
-import com.superapp.auth_service.exception.ExistingUsernameException;
-import com.superapp.auth_service.exception.NoUserFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,79 +18,57 @@ public class UserController {
     @Autowired
     private IUserMapper userMapper;
 
+    /**
+     * Create a User
+     * @param userDto User data for creating a new user.
+     * @return ResponseEntity with the created user data and HTTP status 201 (Created).
+     */
     @PostMapping
     public ResponseEntity createUser(@RequestBody UserDto userDto) {
-        try {
-            UserDto userCreated = userMapper.userToUserDto(userService.createUser(userDto));
-            return new ResponseEntity<UserDto>(userCreated, HttpStatus.CREATED);
-
-        } catch (ExistingIdException | ExistingUsernameException | ExistingEmailException e) {
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-
-        } catch (Exception e) {
-            log.debug(e.getMessage());
-            return new ResponseEntity<>("Unknown error :c", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        UserDto userCreated = userMapper.userToUserDto(userService.createUser(userDto));
+        return new ResponseEntity<UserDto>(userCreated, HttpStatus.CREATED);
     }
 
+    /**
+     * Get All Users
+     * @return ResponseEntity with a list of all users and HTTP status 200 (OK).
+     */
     @GetMapping
     public ResponseEntity findAll(){
-        try {
-            List<UserDto> users = userMapper.userListToUserDtoList(userService.findAll());
-            return new ResponseEntity<List<UserDto>>(users,HttpStatus.OK);
-
-        } catch (Exception e){
-            log.debug(e.getMessage());
-            return new ResponseEntity<>("Unknown error :c", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<UserDto> users = userMapper.userListToUserDtoList(userService.findAll());
+        return new ResponseEntity<List<UserDto>>(users, HttpStatus.OK);
     }
 
+    /**
+     * Find User by ID
+     * @param id User ID to retrieve a specific user.
+     * @return ResponseEntity with the user data and HTTP status 302 (Found).
+     */
     @GetMapping("/{id}")
     public ResponseEntity findById(@PathVariable Integer id){
-        try {
-            UserDto userFound = userMapper.userToUserDto(userService.findById(id));
-            return new ResponseEntity<UserDto>(userFound,HttpStatus.FOUND);
-
-        } catch (NoUserFoundException e) {
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-
-        } catch (Exception e){
-            log.debug(e.getMessage());
-            return new ResponseEntity<>("Unknown error :c", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        UserDto userFound = userMapper.userToUserDto(userService.findById(id));
+        return new ResponseEntity<UserDto>(userFound, HttpStatus.FOUND);
     }
 
+    /**
+     * Update User
+     * @param userDto User data for updating an existing user.
+     * @return ResponseEntity with the updated user data and HTTP status 200 (OK).
+     */
     @PutMapping()
     public ResponseEntity update(@RequestBody UserDto userDto){
-        try {
-            UserDto userUpdated = userMapper.userToUserDto(userService.updateUser(userDto));
-            return new ResponseEntity<UserDto>(userUpdated,HttpStatus.OK);
-
-        } catch (NoUserFoundException e) {
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-
-        } catch (Exception e){
-            log.debug(e.getMessage());
-            return new ResponseEntity<>("Unknown error :c", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        UserDto userUpdated = userMapper.userToUserDto(userService.updateUser(userDto));
+        return new ResponseEntity<UserDto>(userUpdated, HttpStatus.OK);
     }
 
-    @DeleteMapping()
-    public ResponseEntity delete(@RequestBody Integer id){
-        try {
-            userService.deleteUser(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-
-        } catch (NoUserFoundException e) {
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-
-        } catch (Exception e){
-            log.debug(e.getMessage());
-            return new ResponseEntity<>("Unknown error :c", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    /**
+     * Delete User
+     * @param id User ID to delete a specific user.
+     * @return ResponseEntity with HTTP status 200 (OK) upon successful deletion.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable Integer id){
+        userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

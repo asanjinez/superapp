@@ -5,13 +5,6 @@ import com.superapp.auth_service.exception.InvalidCredentialsException;
 import com.superapp.auth_service.user.IUserService;
 import com.superapp.auth_service.user.User;
 import com.superapp.auth_service.user.UserDto;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import java.security.Key;
-import java.util.Base64;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,7 +32,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService{
 
             User user = userService.createUser(userDto);
             String jwtToken = jwtService.generateToken(user);
-
+            log.info("User registered: {}", userDto.getUsername());
             return new AuthenticationResponse(jwtToken);
         } catch (Exception e) {
             log.error("Error registering user: {}", userDto.getUsername());
@@ -54,6 +47,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService{
 
             User user = userService.findByUsername(authenticationRequest.getUsername());
             String jwtToken = jwtService.generateToken(user);
+            log.info("User authenticated: {}", authenticationRequest.getUsername());
             return new AuthenticationResponse(jwtToken);
         } catch (BadCredentialsException e){
             log.error("Error authenticating user: {}", authenticationRequest.getUsername());

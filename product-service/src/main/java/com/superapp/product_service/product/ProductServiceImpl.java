@@ -21,10 +21,11 @@ public class ProductServiceImpl implements IProductService {
     @Autowired
     private IProductMapper productMapper;
 
-
     @Override
     public List<Product> findAll() {
-        return productJpaDao.findAll();
+        var products = productJpaDao.findAll();
+        log.info("Products found: {} ", products);
+        return products;
     }
 
     @Override
@@ -33,13 +34,15 @@ public class ProductServiceImpl implements IProductService {
             if(productDto.getId() != null && productJpaDao.findById(productDto.getId()).isPresent())
                 throw new ExistingIdException("Alredy exists a product with id: " + productDto.getId());
 
-            return productJpaDao.save(productMapper.productDtoToProduct(productDto));
+            Product productCreated = productJpaDao.save(productMapper.productDtoToProduct(productDto));
+            log.info("Product created: {} ", productCreated);
+            return productCreated;
 
         } catch (ExistingIdException | NoProductFoundException exception) {
-            log.info(exception.getMessage(),exception);
+            log.error(exception.getMessage(),exception);
             throw exception;
         } catch (Exception exception){
-            log.info(exception.getMessage(),exception);
+            log.error(exception.getMessage(),exception);
             throw exception;
         }
     }
@@ -50,21 +53,25 @@ public class ProductServiceImpl implements IProductService {
         for (ProductDto product : productDtoList){
             productList.add(this.createProduct(product));
         }
+
+        log.info("{} Products created", productList.size());
         return productList;
     }
 
     @Override
     public Product findById(Integer id) {
         try {
-            return this.productExistsException(id);
+            Product product = this.productExistsException(id);
+            log.info("Product found: {} ", product);
+            return product;
 
 
         } catch (NoProductFoundException exception) {
-            log.info(exception.getMessage(),exception);
+            log.error(exception.getMessage(),exception);
             throw exception;
 
         } catch (Exception exception){
-            log.info(exception.getMessage(),exception);
+            log.error(exception.getMessage(),exception);
             throw exception;
         }
     }
@@ -78,10 +85,12 @@ public class ProductServiceImpl implements IProductService {
             productToEdit.setDescription(productDto.getDescription());
             productToEdit.setUnitPrice(productDto.getUnitPrice());
 
-            return productJpaDao.save(productToEdit);
+            Product productUpdated = productJpaDao.save(productToEdit);
+            log.info("Product updated: {} ", productUpdated);
+            return productUpdated;
 
         } catch (NoProductFoundException  e) {
-            log.info(e.getMessage(),e);
+            log.error(e.getMessage(),e);
             throw e;
         } catch (Exception e) {
             log.error(e.getMessage(),e);
@@ -92,14 +101,13 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Product findByName(String name) {
         try {
-            Optional<Product> product = productJpaDao.findByName(name);
-            if (!product.isPresent())
-                throw new NoProductFoundException("The product with name: " + name + " doesn't exist");
-
-            return product.get();
+            //find product by name or else trhow exception:
+            Product product = productJpaDao.findByName(name).orElseThrow(() -> new NoProductFoundException("The product with name: " + name + " doesn't exist"));
+            log.info("Product found: {} ", product);
+            return product;
 
         } catch (NoProductFoundException  e) {
-            log.info(e.getMessage(),e);
+            log.error(e.getMessage(),e);
             throw e;
         } catch (Exception e) {
             log.error(e.getMessage(),e);
@@ -112,9 +120,10 @@ public class ProductServiceImpl implements IProductService {
         try {
             Product productToDelete = this.productExistsException(id);
             productJpaDao.delete(productToDelete);
+            log.info("Product deleted: {} ", productToDelete);
 
         } catch (NoProductFoundException  e) {
-            log.info(e.getMessage(),e);
+            log.error(e.getMessage(),e);
             throw e;
         } catch (Exception e) {
             log.error(e.getMessage(),e);
@@ -123,10 +132,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     private Product productExistsException(Integer id){
-        Optional<Product> product = productJpaDao.findById(id);
-        if (!product.isPresent())
-            throw new NoProductFoundException("The product with id: " + id + " doesn't exist");
-
-        return product.get();
+        Product productFound = productJpaDao.findById(id).orElseThrow(() -> new NoProductFoundException("The product with id: " + id + " doesn't exist"));
+        return productFound;
     }
 }

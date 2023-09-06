@@ -14,11 +14,23 @@ public class AuthController {
     @Autowired
     private IAuthenticationService authenticationService;
 
+    /**
+     * User Registration
+     *
+     * @param userDto User data for registration.
+     * @return ResponseEntity with the registration token response.
+     */
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(authenticationService.register(userDto));
     }
 
+    /**
+     * User Authentication
+     *
+     * @param authenticationRequest User authentication data.
+     * @return ResponseEntity with the authentication token response.
+     */
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
         return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));

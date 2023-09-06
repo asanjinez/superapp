@@ -55,16 +55,19 @@ public class BillServiceImpl implements IBillService {
             if (response.hasErrors())
                 throw new InvalidBillException("Some products are not in stock");
 
-            return billJpaDao.save(billMapper.billDtoToBill(billDto));
+            Bill billCreated = billJpaDao.save(billMapper.billDtoToBill(billDto));
+            log.info("Bill created: {} ", billCreated);
+
+            return billCreated;
 
         } catch (WebClientRequestException exception) {
-            log.info(exception.getMessage(), exception);
+            log.error(exception.getMessage(), exception);
             throw new ValidatorServiceException("Error with Validator-microservice");
         } catch (ExistingIdException | InvalidBillException exception) {
-            log.info(exception.getMessage(), exception);
+            log.error(exception.getMessage(), exception);
             throw exception;
         } catch (Exception exception){
-            log.info(exception.getMessage(), exception);
+            log.error(exception.getMessage(), exception);
             throw exception;
         }
     }
@@ -72,13 +75,15 @@ public class BillServiceImpl implements IBillService {
     @Override
     public Bill findById(Integer id) {
         try {
-            return this.billExists(id);
+            Bill billFound = this.billExists(id);
+            log.info("Bill found: {} ", billFound);
+            return billFound;
 
         } catch (NoBillFoundException exception) {
-            log.info(exception.getMessage(), exception);
+            log.error(exception.getMessage(), exception);
             throw exception;
         } catch (Exception exception){
-            log.info(exception.getMessage(), exception);
+            log.error(exception.getMessage(), exception);
             throw exception;
         }
     }
@@ -94,12 +99,16 @@ public class BillServiceImpl implements IBillService {
             billToEdit.setItems(itemMapper.itemDtoListToItemList(billDto.getDtoItems()));
             billToEdit.setTotal(billDto.getTotal());
 
-            return billJpaDao.save(billToEdit);
+            Bill billEdited = billJpaDao.save(billToEdit);
+            log.info("Bill edited: {} ", billEdited);
+
+            return billEdited;
+
         } catch (NoBillFoundException|InvalidBillException exception) {
-            log.info(exception.getMessage(), exception);
+            log.error(exception.getMessage(), exception);
             throw exception;
         } catch (Exception exception){
-            log.info(exception.getMessage(), exception);
+            log.error(exception.getMessage(), exception);
             throw exception;
         }
 
@@ -110,12 +119,13 @@ public class BillServiceImpl implements IBillService {
         try {
             Bill billToDelete = this.billExists(id);
             billJpaDao.delete(billToDelete);
+            log.info("Bill deleted: {} ", billToDelete);
 
         } catch (NoBillFoundException exception) {
-            log.info(exception.getMessage(), exception);
+            log.error(exception.getMessage(), exception);
             throw exception;
         } catch (Exception exception){
-            log.info(exception.getMessage(), exception);
+            log.error(exception.getMessage(), exception);
             throw exception;
         }
     }

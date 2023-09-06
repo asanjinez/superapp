@@ -11,7 +11,6 @@ import java.util.Date;
 @ControllerAdvice
 public class GlobalExceptionHandler  {
     // Specific Exceptions
-
     @ExceptionHandler(ExistingIdException.class)
     public ResponseEntity<?> handleExistingId(ExistingIdException e, WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(),e.getMessage(), webRequest.getDescription(false));
@@ -19,7 +18,7 @@ public class GlobalExceptionHandler  {
     }
 
     @ExceptionHandler(ExistingUsernameException.class)
-    public ResponseEntity<?> handleExistingUsername(ExistingIdException e, WebRequest webRequest) {
+    public ResponseEntity<?> handleExistingUsername(ExistingUsernameException e, WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(),e.getMessage(), webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
@@ -31,7 +30,7 @@ public class GlobalExceptionHandler  {
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<?> InvalidCredentialsException(ExistingIdException e, WebRequest webRequest) {
+    public ResponseEntity<?> InvalidCredentialsException(InvalidCredentialsException e, WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(),e.getMessage(), webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
     }
