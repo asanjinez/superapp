@@ -5,8 +5,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -23,6 +25,9 @@ public class JwtService {
 
     @Value("${security.jwt.expirationTime.hours}")
     private Integer expirationTime;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
     public String extractUsername(String jwt) {
         return this.extractClaim(jwt, Claims::getSubject);
     }
@@ -59,8 +64,10 @@ public class JwtService {
         return this.generateToken(new HashMap<>(), userDetails);
     }
 
-    public Boolean validateToken(String jwtToken, UserDetails userDetails) {
+    public Boolean validateToken(String jwtToken) {
         final String username = this.extractUsername(jwtToken);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
         return username.equals(userDetails.getUsername()) && !this.isTokenExpired(jwtToken);
     }
 

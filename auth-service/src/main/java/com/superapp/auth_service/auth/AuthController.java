@@ -1,6 +1,7 @@
 package com.superapp.auth_service.auth;
 
 import com.superapp.auth_service.user.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,4 +36,10 @@ public class AuthController {
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
         return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
     }
+
+    @PostMapping("/validateToken")
+    public ResponseEntity<String> validateToken(@RequestBody String token) {
+        return ResponseEntity.ok(authenticationService.validateToken(token));
+    }
+
 }

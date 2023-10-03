@@ -9,8 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 
 @Service
@@ -24,6 +27,8 @@ public class AuthenticationServiceImpl implements IAuthenticationService{
     private JwtService jwtService;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Override
     public AuthenticationResponse register(UserDto userDto){
@@ -49,14 +54,27 @@ public class AuthenticationServiceImpl implements IAuthenticationService{
             String jwtToken = jwtService.generateToken(user);
             log.info("User authenticated: {}", authenticationRequest.getUsername());
             return new AuthenticationResponse(jwtToken);
-        } catch (BadCredentialsException e){
+        } catch (BadCredentialsException e) {
             log.error("Error authenticating user: {}", authenticationRequest.getUsername());
             throw new InvalidCredentialsException("Invalid credentials");
 
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             throw e;
         }
+    }
 
+        @Override
+        public String validateToken(String token){
+            try {
+                String username = jwtService.extractUsername(token);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                String idUser = String.valueOf(userService.findByUsername(username).getId());
+
+                return jwtService.validateToken(token) ? idUser : null;
+            } catch (Exception e) {
+                log.error(e.getMessage(),e);
+                throw e;
+            }
     }
 }
